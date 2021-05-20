@@ -16,7 +16,7 @@
 # Load packages
 # ---------------------------------------------------------------------------------------------
 list.of.packages <- c("ggplot2", "colorspace", "dplyr", "tidyverse", "reshape2", 
-                        "png", "lubridate","ggcorrplot","ggrepel")
+                        "png", "lubridate","ggcorrplot","ggrepel", "plotly")
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)  
@@ -139,9 +139,9 @@ w <- 10
 h <- 6
 
 # Plot the Covid map and Save the plots in .jpeg format
-# These pictures can then be loaded in ImageJ to make a .avi file
+# These .jpeg files can then be loaded in ImageJ to make a .avi file
 for(i in 1:17){
-  jpeg(filename=paste0("results/Covid_",i,".jpeg"),
+  jpeg(filename=paste0("results/plots/Covid_",i,".jpeg"),
       width=w,height=h,unit="in",res=200)
   print(map_plot(data=data, map=world, m=i))
   dev.off()
@@ -174,7 +174,7 @@ names(covid_3) <- c("Continent","Country","date", "total_deaths", "total_cases",
                     "Diabetes Prevalence", "Hospital Beds/1000", 
                     "HDI", "Death Rate")
 
-# Create Correlation heat map
+# Create Correlation heat map (this will show up in the Plots window)
 ggcorrplot(cor(covid_3[,6:11],covid_3[,6:11]), 
            sig.level=0.05, lab_size = 4.5, p.mat = NULL, 
            insig = c("pch", "blank"), pch = 1, pch.col = "black", pch.cex =1,
@@ -229,7 +229,7 @@ plot <- ggplotly(p) %>%
 plot
 
 
-# Save the interactive plot to the reults folder
+# Save the interactive plot to the results folder
 htmlwidgets::saveWidget(plot, "results/scatter_plot.html")
 
 # ---------------------------------------------------------------------------------------------
